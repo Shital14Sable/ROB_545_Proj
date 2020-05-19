@@ -12,3 +12,6 @@ Execution:
 
 1. To launch PR2 in empty world: roslaunch pr2_gazebo pr2_empty_world.launch
 2. To launch environment from gazebo: gazebo worlds/<env name>
+
+Execution Method 2 - Hardcoded environment:
+1. To launch the pr2 with table, object, and two obstacles: roslaunch manipulation project.launch

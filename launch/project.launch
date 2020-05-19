@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<launch>
+<include file="$(find pr2_gazebo)/launch/pr2_empty_world.launch"/>
+
+<param name="green_object" command="cat '$(find ROB_545_Proj)/urdf/object.urdf'" />
+    
+<node name="obstacle_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+          args="-param /green_object -urdf -model object" />
+
+<param name="table_top" command="cat '$(find ROB_545_Proj)/urdf/table_top.urdf'" />
+    
+<node name="table_top_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+          args="-param /table_top -urdf -model table_top" />
+
+<param name="obstacle1" command="cat '$(find ROB_545_Proj)/urdf/obstacle.urdf'" />
+    
+<node name="obstacle1_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+          args="-param /obstacle1 -urdf -model obstacle1" />
+
+<param name="obstacle2" command="cat '$(find ROB_545_Proj)/urdf/obstacle2.urdf'" />
+    
+<node name="obstacle2_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+          args="-param /obstacle2 -urdf -model obstacle2" />
+
+<!-- I wanted to reuse obstacle.urdf but change the location.... IDK why this doesn't work - we need to look up syntax-->
+<!--<param name="obstacle2" command="cat '$(find ROB_545_Proj)/urdf/obstacle.urdf'" />
+    
+<node name="obstacle2_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+          args="-param /obstacle2 -urdf -x .5 -y -.25 -z 0.6 -model obstacle1" />-->
+
+</launch>
+
