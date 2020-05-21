@@ -1,0 +1,26 @@
+# This config file for Travis CI utilizes https://github.com/ros-planning/moveit_ci package.
+sudo: required
+dist: xenial  # distro used by Travis, moveit_ci uses the docker image's distro
+services:
+  - docker
+language: cpp
+compiler: gcc
+cache: ccache
+
+notifications:
+  email:
+    recipients:
+
+env:
+  matrix:
+    - TEST="clang-format catkin_lint"  ROS_DISTRO=melodic
+    # Due to the new KinematicsBase API, these tests fail since Melodic
+    - DOCKER_IMAGE=moveit/moveit:master-source  TEST_BLACKLIST="pr2_moveit_tests"
+    - DOCKER_IMAGE=moveit/moveit:melodic-source TEST_BLACKLIST="pr2_moveit_tests"
+    - DOCKER_IMAGE=moveit/moveit:kinetic-source
+
+before_script:
+  - git clone -q --depth=1 https://github.com/ros-planning/moveit_ci.git .moveit_ci
+
+script:
+  - .moveit_ci/travis.sh
