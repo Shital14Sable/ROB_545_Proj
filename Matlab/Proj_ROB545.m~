@@ -257,8 +257,7 @@ for a = 1:1:num_of_env
             average_time = average_time + tiime;
             execution_time(a,b,c) = tiime;
             close all
-            file_name = sprintf('InitObj env%d planner%d itr%d.csv' , a, b, c);
-            file_name2 = sprintf('ObjGoal env%d planner%d itr%d.csv' , a, b, c);
+            
             writematrix(newPathObj.States, file_name)
             writematrix(pthObj2.States, file_name2)
         end
