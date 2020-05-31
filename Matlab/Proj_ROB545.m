@@ -7,8 +7,8 @@ close all
 
 kin = loadrobot('kinovaJacoJ2S7S300');
 num_of_env = 6;
-num_of_itr_per_combo = 10;
-num_of_planner = 2;
+num_of_itr_per_combo = 1;
+num_of_planner = 1;
 time_to_execute = zeros(num_of_env, num_of_planner);
 visualize = 0;
 execution_time = zeros(num_of_env, num_of_planner, num_of_itr_per_combo);
@@ -22,6 +22,8 @@ for a = 1:1:num_of_env
         average_time = 0;
         for c = 1:1:num_of_itr_per_combo
             tic;
+            filename = sprintf('InitObj env%d planner%d itr%d.csv' , a, b, c);
+            filename2 = sprintf('ObjGoal env%d planner%d itr%d.csv' , a, b, c);
             fprintf('Number of iterations: %f.\n',c)
             plannerdec = b;
             ss = ExampleHelperRigidBodyTreeStateSpace(kin);
@@ -46,7 +48,7 @@ for a = 1:1:num_of_env
             tabletop2 = collisionBox(0.6,0.2,0.02);
             tabletop2.Pose = trvec2tform([-0.2,0.4,0.5]);
             can = collisionCylinder(0.03,0.16);
-            can.Pose = trvec2tform([0.3,0.0,0.7]);
+            can.Pose = trvec2tform([0.3,0.0,0.69]);
             worldCollisionArray = {floor tabletop1 tabletop2 can};
             % Customize The State Validator
 % The customized state validator, ExampleHelperValidatorRigidBodyTree, provides rigid body collision checking between the robot and the environment. This validator checks sampled configurations and the planner should discard invalid states.
@@ -69,6 +71,7 @@ for a = 1:1:num_of_env
             addFixedObstacle(sv,floor, 'floor', [1,0.5,0]);
 
             elseif env == 2
+                
             disp('Environment 2 - 1 can, side walls, no roof')
             floor = collisionBox(1, 1, 0.01);
             tabletop1 = collisionBox(0.4,1,0.02);
@@ -76,11 +79,11 @@ for a = 1:1:num_of_env
             tabletop2 = collisionBox(0.6,0.2,0.02);
             tabletop2.Pose = trvec2tform([-0.2,0.4,0.5]);
             can = collisionCylinder(0.03,0.16);
-            can.Pose = trvec2tform([0.3,0.0,0.7]);
+            can.Pose = trvec2tform([0.3,0.0,0.69]);
             sidewall1 = collisionBox(0.4,0.03,0.3);
-            sidewall1.Pose = trvec2tform([0.3,-0.25,0.77]);
+            sidewall1.Pose = trvec2tform([0.3,-0.25,0.76]);
             sidewall2 = collisionBox(0.4,0.03,0.3);
-            sidewall2.Pose = trvec2tform([0.3,0.25,0.77]);
+            sidewall2.Pose = trvec2tform([0.3,0.25,0.76]);
             
             worldCollisionArray = {floor tabletop1 tabletop2 can sidewall1 sidewall2};
             
@@ -110,13 +113,13 @@ for a = 1:1:num_of_env
             tabletop2 = collisionBox(0.6,0.2,0.02);
             tabletop2.Pose = trvec2tform([-0.2,0.4,0.5]);
             can = collisionCylinder(0.03,0.16);
-            can.Pose = trvec2tform([0.3,0.0,0.7]);
+            can.Pose = trvec2tform([0.3,0.0,0.69]);
             sidewall1 = collisionBox(0.4,0.03,0.3);
-            sidewall1.Pose = trvec2tform([0.3,-0.25,0.77]);
+            sidewall1.Pose = trvec2tform([0.3,-0.25,0.76]);
             sidewall2 = collisionBox(0.4,0.03,0.3);
-            sidewall2.Pose = trvec2tform([0.3,0.25,0.77]);
-            roof = collisionBox(0.4, 0.5, 0.01);
-            roof.Pose = trvec2tform([0.3,0,0.9]);
+            sidewall2.Pose = trvec2tform([0.3,0.25,0.76]);
+            roof = collisionBox(0.4,0.53,0.02);
+            roof.Pose = trvec2tform([0.3,0,0.92]);
             
             worldCollisionArray = {floor tabletop1 tabletop2 can sidewall1 sidewall2 roof};
             
@@ -148,15 +151,14 @@ for a = 1:1:num_of_env
             tabletop2 = collisionBox(0.6,0.2,0.02);
             tabletop2.Pose = trvec2tform([-0.2,0.4,0.5]);
             can = collisionCylinder(0.03,0.16);
-            can.Pose = trvec2tform([0.3,0.0,0.7]);
+            can.Pose = trvec2tform([0.3,0.0,0.69]);
             can2 = collisionCylinder(0.03,0.16);
-            can2.Pose = trvec2tform([0.2,-0.15,0.7]);
+            can2.Pose = trvec2tform([0.2,-0.15,0.69]);
             can3 = collisionCylinder(0.03,0.16);
-            can3.Pose = trvec2tform([0.4,0.15,0.7]);
+            can3.Pose = trvec2tform([0.2,0.15,0.69]);
             
             worldCollisionArray = {floor tabletop1 tabletop2 can can2 can3};
-            
-                        
+
             Tw_0 = can.Pose;
             Te_w = rotm2tform(R);
             bounds = [0 0;       % x
@@ -184,20 +186,17 @@ for a = 1:1:num_of_env
             tabletop2 = collisionBox(0.6,0.2,0.02);
             tabletop2.Pose = trvec2tform([-0.2,0.4,0.5]);
             can = collisionCylinder(0.03,0.16);
-            can.Pose = trvec2tform([0.3,0.0,0.7]);
+            can.Pose = trvec2tform([0.3,0.0,0.69]);
             can2 = collisionCylinder(0.03,0.16);
-            can2.Pose = trvec2tform([0.2,-0.15,0.7]);
+            can2.Pose = trvec2tform([0.2,-0.15,0.69]);
             can3 = collisionCylinder(0.03,0.16);
-            can3.Pose = trvec2tform([0.4,0.15,0.7]);
+            can3.Pose = trvec2tform([0.2,0.15,0.69]);
             sidewall1 = collisionBox(0.4,0.03,0.3);
-            sidewall1.Pose = trvec2tform([0.3,-0.25,0.77]);
+            sidewall1.Pose = trvec2tform([0.3,-0.25,0.76]);
             sidewall2 = collisionBox(0.4,0.03,0.3);
-            sidewall2.Pose = trvec2tform([0.3,0.25,0.77]);
-            
-            
-            worldCollisionArray = {floor tabletop1 tabletop2 can can2 can3 sidewall1 sidewall2 };
-            
-                        
+            sidewall2.Pose = trvec2tform([0.3,0.25,0.76]);
+            worldCollisionArray = {floor tabletop1 tabletop2 can can2 can3 sidewall1 sidewall2};
+                                
             Tw_0 = can.Pose;
             Te_w = rotm2tform(R);
             bounds = [0 0;       % x
@@ -228,18 +227,17 @@ for a = 1:1:num_of_env
             tabletop2 = collisionBox(0.6,0.2,0.02);
             tabletop2.Pose = trvec2tform([-0.2,0.4,0.5]);
             can = collisionCylinder(0.03,0.16);
-            can.Pose = trvec2tform([0.3,0.0,0.7]);
+            can.Pose = trvec2tform([0.3,0.0,0.69]);
             can2 = collisionCylinder(0.03,0.16);
-            can2.Pose = trvec2tform([0.2,-0.15,0.7]);
+            can2.Pose = trvec2tform([0.2,-0.15,0.69]);
             can3 = collisionCylinder(0.03,0.16);
-            can3.Pose = trvec2tform([0.2,0.15,0.7]);
+            can3.Pose = trvec2tform([0.2,0.15,0.69]);
             sidewall1 = collisionBox(0.4,0.03,0.3);
-            sidewall1.Pose = trvec2tform([0.3,-0.25,0.77]);
+            sidewall1.Pose = trvec2tform([0.3,-0.25,0.76]);
             sidewall2 = collisionBox(0.4,0.03,0.3);
-            sidewall2.Pose = trvec2tform([0.3,0.25,0.77]);
-            roof = collisionBox(0.4, 0.5, 0.01);
-            roof.Pose = trvec2tform([0.3,0,0.9]);
-            
+            sidewall2.Pose = trvec2tform([0.3,0.25,0.76]);
+            roof = collisionBox(0.4,0.53,0.02);
+            roof.Pose = trvec2tform([0.3,0,0.92]);
             worldCollisionArray = {floor tabletop1 tabletop2 can can2 can3 sidewall1 sidewall2 roof};
             
                         
@@ -335,8 +333,12 @@ for a = 1:1:num_of_env
              newPathObj = exampleHelperPathSmoothing(pthObj,sv);
              interpolate(newPathObj,200);
              
+             
+             
 %             figure
              states = newPathObj.States;
+             
+             %writematrix(states, filename)
              
              % Draw the robot.
             ax = show(kin,states(1,:));
@@ -382,6 +384,9 @@ for a = 1:1:num_of_env
             ss.UseConstrainedSampling = true;
             planner.MaxConnectionDistance = 0.05;
             [pthObj2,~] = plan(planner,q,q);
+            
+             writematrix(pthObj2.States, filename2)
+            
 % Visualize the motion.
             states = pthObj2.States;
 %             
@@ -407,8 +412,8 @@ for a = 1:1:num_of_env
         time_to_execute(a, b) = average_time/num_of_itr_per_combo;
     end
 end
-save('Test_2_env-1-2_planner-1-2_avg-10_without-display', 'time_to_execute')
-save('Test_2_individual-execution-time_env-1-2_planner-1_without-display', 'execution_time') 
+save('Test_3_env-1-6_planner-1-2_avg-10_without-display.mat', 'time_to_execute')
+save('Test_3_individual-execution-time_env-1-6_planner-1_without-display.mat', 'execution_time') 
 
 % writematrix(time_to_execute, 'Env1_RRT_RRT*_avgtime.csv') 
 % for i = 1:num_of_itr_per_combo
