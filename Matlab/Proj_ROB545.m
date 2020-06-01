@@ -6,9 +6,9 @@ clear
 close all
 
 kin = loadrobot('kinovaJacoJ2S7S300');
-num_of_env = 1;
+num_of_env = 6;
 num_of_itr_per_combo = 10;
-num_of_planner = 1; 
+num_of_planner = 2; 
 time_to_execute = zeros(num_of_env, num_of_planner);
 visualize = 0; % To display motion 1 or else 0
 rrt_special = 0; % 0 for normal RRT* that stops when it gets to goal or 1 to contiue optimizing
@@ -16,13 +16,13 @@ rrt_itr = 800;
 execution_time = zeros(num_of_env, num_of_planner, num_of_itr_per_combo);
 
 for a = 1:1:num_of_env
-    env = 6;
+    env = a;
     for b = 1:1:num_of_planner
         average_time = 0;
-        for c = 8:1:num_of_itr_per_combo
+        for c = 1:1:num_of_itr_per_combo
             tic;
             fprintf('Number of iterations: %f.\n',c)
-            plannerdec = 2;
+            plannerdec = b;
             
             floor = collisionBox(1, 1, 0.01);
             tabletop1 = collisionBox(0.4,1,0.02);
@@ -266,18 +266,18 @@ for a = 1:1:num_of_env
             average_time = average_time + time_to_complete_single_itr;
             execution_time(a,b,c) = time_to_complete_single_itr;
             close all
-            file_name = sprintf('Test_1_InitObj env%d planner%d itr%d.csv' , a, b, c);
-            file_name2 = sprintf('Test_1_ObjGoal env%d planner%d itr%d.csv' , a, b, c);
+            file_name = sprintf('Test_2_InitObj env%d planner%d itr%d.csv' , a, b, c);
+            file_name2 = sprintf('Test_2_ObjGoal env%d planner%d itr%d.csv' , a, b, c);
             writematrix(newPathObj.States, file_name)
             writematrix(pthObj2.States, file_name2)
-            save(['Test_1_solinfo_env_' num2str(a) '_planner_' num2str(b) '_itr_' num2str(c) '.mat'],'solnInfo')
-            save(['Test_1_solinfo2_env_' num2str(a) '_planner_' num2str(b) '_itr_' num2str(c) '.mat'],'solnInfo2')
+            save(['Test_2_solinfo_env_' num2str(a) '_planner_' num2str(b) '_itr_' num2str(c) '.mat'],'solnInfo')
+            save(['Test_2_solinfo2_env_' num2str(a) '_planner_' num2str(b) '_itr_' num2str(c) '.mat'],'solnInfo2')
         end
         time_to_execute(a, b) = average_time/num_of_itr_per_combo;
     end
 end
-save('Test_1_env-1-6_planner-1-2_avg-10_without-display.mat', 'time_to_execute')
-save('Test_1_individual-execution-time_env-1-6_planner-1_without-display.mat', 'execution_time') 
+save('Test_2_env-1-6_planner-1-2_avg-10_without-display.mat', 'time_to_execute')
+save('Test_2_individual-execution-time_env-1-6_planner-1_without-display.mat', 'execution_time') 
 
 % References
 % [1] D. Berenson, S. Srinivasa, D. Ferguson, A. Collet, and J. Kuffner, "Manipulation Planning with Workspace Goal Regions", in Proceedings of IEEE International Conference on Robotics and Automation, 2009, pp.1397-1403
