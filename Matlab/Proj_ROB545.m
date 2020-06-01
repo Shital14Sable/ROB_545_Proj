@@ -246,8 +246,10 @@ for a = 1:1:num_of_env
             ss.UseConstrainedSampling = true;
             planner.MaxConnectionDistance = 0.05;
             [pthObj2, solnInfo2] = plan(planner,q,q);
-
-            states = pthObj2.States;
+            interpolate(pthObj2,100);
+            newPathObj2 = exampleHelperPathSmoothing(pthObj2,sv);
+            interpolate(newPathObj2,200);
+            states = newPathObj2.States;
              
             view(ax, 152,45)
             if visualize == 1
@@ -266,18 +268,18 @@ for a = 1:1:num_of_env
             average_time = average_time + time_to_complete_single_itr;
             execution_time(a,b,c) = time_to_complete_single_itr;
             close all
-            file_name = sprintf('Test_2_InitObj env%d planner%d itr%d.csv' , a, b, c);
-            file_name2 = sprintf('Test_2_ObjGoal env%d planner%d itr%d.csv' , a, b, c);
+            file_name = sprintf('Test_4_InitObj env%d planner%d itr%d.csv' , a, b, c);
+            file_name2 = sprintf('Test_4_ObjGoal env%d planner%d itr%d.csv' , a, b, c);
             writematrix(newPathObj.States, file_name)
-            writematrix(pthObj2.States, file_name2)
-            save(['Test_2_solinfo_env_' num2str(a) '_planner_' num2str(b) '_itr_' num2str(c) '.mat'],'solnInfo')
-            save(['Test_2_solinfo2_env_' num2str(a) '_planner_' num2str(b) '_itr_' num2str(c) '.mat'],'solnInfo2')
+            writematrix(newPathObj2.States, file_name2)
+            save(['Test_4_solinfo_env_' num2str(a) '_planner_' num2str(b) '_itr_' num2str(c) '.mat'],'solnInfo')
+            save(['Test_4_solinfo2_env_' num2str(a) '_planner_' num2str(b) '_itr_' num2str(c) '.mat'],'solnInfo2')
         end
         time_to_execute(a, b) = average_time/num_of_itr_per_combo;
     end
 end
-save('Test_2_env-1-6_planner-1-2_avg-10_without-display.mat', 'time_to_execute')
-save('Test_2_individual-execution-time_env-1-6_planner-1_without-display.mat', 'execution_time') 
+save('Test_4_env-1-6_planner-1-2_avg-10_without-display.mat', 'time_to_execute')
+save('Test_4_individual-execution-time_env-1-6_planner-1_without-display.mat', 'execution_time') 
 
 % References
 % [1] D. Berenson, S. Srinivasa, D. Ferguson, A. Collet, and J. Kuffner, "Manipulation Planning with Workspace Goal Regions", in Proceedings of IEEE International Conference on Robotics and Automation, 2009, pp.1397-1403
