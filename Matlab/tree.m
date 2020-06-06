@@ -1,0 +1,1 @@
+plot(solnInfo2.TreeData(:,1), solnInfo2.TreeData(:,2), '.-'); % tree expansion

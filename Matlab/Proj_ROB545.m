@@ -6,19 +6,25 @@ clear
 close all
 
 kin = loadrobot('kinovaJacoJ2S7S300');
-num_of_env = 6;
-num_of_itr_per_combo = 2;
-num_of_planner = 3;
+num_of_env = 1;
+num_of_itr_per_combo = 1;
+num_of_planner = 2;
 time_to_execute = zeros(num_of_env, num_of_planner);
+Final_cost_init_obj = zeros(num_of_env, num_of_planner);
+Final_cost_obj_goal = zeros(num_of_env, num_of_planner);
+Final_cost_total =  zeros(num_of_env, num_of_planner, num_of_itr_per_combo);
 visualize = 0; % To display motion 1 or else 0
 rrt_special = 1; % 0 for normal RRT* that stops when it gets to goal or 1 to contiue optimizing
-rrt_itr = 1500;
+rrt_itr = 2500;
 execution_time = zeros(num_of_env, num_of_planner, num_of_itr_per_combo);
 
 for a = 1:1:num_of_env
     env = a;
     for b = 1:1:num_of_planner
         average_time = 0;
+        cost1 = 0;
+        cost2 = 0;
+        %Totalcost = 0;
         for c = 1:1:num_of_itr_per_combo
             tic;
             fprintf('Number of iterations: %f.\n',c)
@@ -276,12 +282,21 @@ for a = 1:1:num_of_env
             writematrix(newPathObj2.States, file_name2)
             save(['Test_5_solinfo_env_' num2str(a) '_planner_' num2str(b) '_itr_' num2str(c) '.mat'],'solnInfo')
             save(['Test_5_solinfo2_env_' num2str(a) '_planner_' num2str(b) '_itr_' num2str(c) '.mat'],'solnInfo2')
+            cost1 = cost1 + solnInfo.cost;
+            cost2 = cost2 + solnInfo2.cost;
+            Final_cost_total(a, b, c) = cost1 + cost2;
         end
         time_to_execute(a, b) = average_time/num_of_itr_per_combo;
+        Final_cost_init_obj(a, b) = cost1/num_of_itr_per_combo;
+        Final_cost_obj_goal(a, b) = cost2/num_of_itr_per_combo;
+
     end
 end
 save('Test_5_env-1-6_planner-1-3_avg-10_without-display.mat', 'time_to_execute')
 save('Test_5_individual-execution-time_env-1-6_planner-1-3_without-display.mat', 'execution_time') 
+save('Final_cost_init_obj.mat', 'Final_cost_init_obj')
+save('Final_cost_obj_goal.mat', 'Final_cost_obj_goal')
+save('Final_cost_total.mat', 'Final_cost_total')
 
 % References
 % [1] D. Berenson, S. Srinivasa, D. Ferguson, A. Collet, and J. Kuffner, "Manipulation Planning with Workspace Goal Regions", in Proceedings of IEEE International Conference on Robotics and Automation, 2009, pp.1397-1403
