@@ -4,11 +4,10 @@
 clc
 clear 
 close all
-
 kin = loadrobot('kinovaJacoJ2S7S300');
-num_of_env = 1;
+num_of_env = 7;
 num_of_itr_per_combo = 1;
-num_of_planner = 2;
+num_of_planner = 3;
 time_to_execute = zeros(num_of_env, num_of_planner);
 Final_cost_init_obj = zeros(num_of_env, num_of_planner);
 Final_cost_obj_goal = zeros(num_of_env, num_of_planner);
@@ -94,6 +93,27 @@ for a = 1:1:num_of_env
                 roof = collisionBox(0.4,0.53,0.02);
                 roof.Pose = trvec2tform([0.3,0,0.92]);
                 %worldCollisionArray = {floor tabletop1 tabletop2 can can2 can3 sidewall1 sidewall2 roof};
+            elseif env == 7
+                disp('Environment 7 - 5 cans, 4 side walls, roof')
+                can2 = collisionCylinder(0.03,0.16);
+                can2.Pose = trvec2tform([0.25,-0.15,0.7]);
+                can3 = collisionCylinder(0.03,0.16);
+                can3.Pose = trvec2tform([0.25,0.15,0.7]);
+                can4 = collisionCylinder(0.03,0.16);
+                can4.Pose = trvec2tform([0.15,-0.15,0.7]);
+                can5 = collisionCylinder(0.03,0.16);
+                can5.Pose = trvec2tform([0.15,0.15,0.7]);
+                sidewall1 = collisionBox(0.4,0.2,0.25);
+                sidewall1.Pose = trvec2tform([0.3,-0.3,0.72]);
+                sidewall2 = collisionBox(0.4,0.2,0.25);
+                sidewall2.Pose = trvec2tform([0.3,0.3,0.72]);
+                roof = collisionBox(0.4,0.6,0.02);
+                roof.Pose = trvec2tform([0.3,0,0.85]);
+                sidewalle1 = collisionBox(0.05,0.2,0.25);
+                sidewalle1.Pose = trvec2tform([-0.30,0.4,0.62]);
+                sidewalle2 = collisionBox(0.05,0.2,0.25);
+                sidewalle2.Pose = trvec2tform([0.0,0.4,0.62]);
+                %worldCollisionArray = {floor sidewalle1 sidewalle2 tabletop1 tabletop2 can can2 can3 can4 can5 sidewall1 sidewall2 roof};
             end
 
             %exampleHelperVisualizeCollisionEnvironment(worldCollisionArray);
@@ -149,6 +169,16 @@ for a = 1:1:num_of_env
                 addFixedObstacle(sv,can3, 'can3', 'r');
                 addFixedObstacle(sv,sidewall1, 'sidewall1', 'g');
                 addFixedObstacle(sv,sidewall2, 'sidewall2', 'g');
+                addFixedObstacle(sv,roof, 'roof', [1,0.5,0]);
+            elseif env == 7
+                addFixedObstacle(sv,can2, 'can2', 'r');
+                addFixedObstacle(sv,can3, 'can3', 'r');
+                addFixedObstacle(sv,can4, 'can4', 'r');
+                addFixedObstacle(sv,can5, 'can5', 'r');
+                addFixedObstacle(sv,sidewall1, 'sidewall1', 'g');
+                addFixedObstacle(sv,sidewall2, 'sidewall2', 'g');
+                addFixedObstacle(sv,sidewalle1, 'sidewalle1', 'g');
+                addFixedObstacle(sv,sidewalle2, 'sidewalle2', 'g');
                 addFixedObstacle(sv,roof, 'roof', [1,0.5,0]);
             end
               
